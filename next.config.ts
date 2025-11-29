@@ -1,7 +1,27 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: false, 
 
-const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['framer-motion', 'react-icons'],
+  },
+
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**', // allow all Cloudinary paths
+      },
+    ],
+  },
+
+
 };
 
-export default nextConfig;
+module.exports = nextConfig;
