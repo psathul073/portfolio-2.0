@@ -30,6 +30,7 @@ async function getProjects(): Promise<{type: 'success', data: Project[]}> {
 export default async function ProjectPage() {
 
   const projectsData = await getProjects();
+  
 
   return (
     <main className="h-screen w-full relative bg-black">

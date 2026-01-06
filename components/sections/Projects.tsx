@@ -17,6 +17,10 @@ export interface Project {
         value: string;
         label: string;
     }>;
+    badge: Array<{
+        value: string;
+        label: string;
+    }>;
 }
 
 interface ProjectsProps {
@@ -36,6 +40,7 @@ function Projects({ initialData }: ProjectsProps) {
     const [visibleCount, setVisibleCount] = useState(INITIAL_LOAD);
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
+    
     useEffect(() => {
         if (initialData?.data?.length) return;
 
@@ -115,6 +120,7 @@ function Projects({ initialData }: ProjectsProps) {
                         <ProjectCard
                             url={item.picture}
                             title={item.title}
+                            badge={item.badge[0]}
                             description={item.description}
                             labels={item.usedTec}
                             liveLink={item.liveURL}

@@ -12,6 +12,10 @@ interface ProjectCardPropType {
         value: string;
         label: string;
     }>;
+    badge: {
+        value: string;
+        label: string;
+    };
     liveLink: string;
     repoLink: string;
     priority?: boolean;
@@ -20,12 +24,14 @@ interface ProjectCardPropType {
 const ProjectCard = memo(function ProjectCard({
     url,
     title,
+    badge,
     description,
     labels,
     liveLink,
     repoLink,
     priority = false,
 }: ProjectCardPropType) {
+
     const handleAction = useCallback((url: string) => {
         window.open(url, "_blank", "noopener,noreferrer");
     }, []);
@@ -43,8 +49,15 @@ const ProjectCard = memo(function ProjectCard({
          bg-[#0B0B0E]/95 border max-sm:border-[#C89B3C]/20 border-[#C89B3C]/10 shadow-[0_0_40px_rgba(200,155,60,0.15)]
          text-orange-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(234,124,20,0.25)] cursor-pointer " >
             {/* badge */}
-            <span className=" z-10 absolute top-3 left-3 text-xs font-semibold bg-orange-500/90 text-black px-2 py-1 rounded-md " >
-                FEATURED
+            <span className={`${badge.value === "badge1"
+                ? "bg-blue-900/50  text-blue-700 "
+                : badge.value === "badge2"
+                    ? "bg-amber-900/50  text-amber-700 "
+                    : badge.value === "badge3"
+                        ? "bg-emerald-900/50  text-emerald-700 "
+                        : "bg-indigo-900/50 text-indigo-700 "
+                } z-10 absolute top-3.5 left-3.5 text-xs font-semibold px-2 py-1 rounded-md backdrop-blur-xs`}>
+                {badge.label}
             </span>
 
             {/* Project image */}
@@ -73,12 +86,12 @@ const ProjectCard = memo(function ProjectCard({
                 {/* labels */}
                 <div className="flex flex-wrap gap-1.5 my-4">
                     {labels.slice(0, 4).map((item, i) => (
-                        <span className="bg-orange-400/15 border border-orange-400/20 px-2 py-0.5 rounded-lg text-xs text-orange-200/80" key={item.value + i} >
+                        <span className="bg-orange-700/20 border border-orange-700/30 border border-orange-700/30 px-2 py-0.5 rounded-lg text-xs text-orange-200/80" key={item.value + i} >
                             {item.label}
                         </span>
                     ))}
                     {labels.length > 4 && (
-                        <span className="bg-orange-400/15 border border-orange-400/20 px-2 py-0.5 rounded-lg text-xs text-orange-200/80 " >
+                        <span className="bg-orange-700/20 border border-orange-700/30 px-2 py-0.5 rounded-lg text-xs text-orange-200/80 " >
                             +{labels.length - 4}
                         </span>
                     )}
