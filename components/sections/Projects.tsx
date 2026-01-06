@@ -5,7 +5,7 @@ import ProjectCard from "../ui/ProjectCard";
 import ProjectCardSkeleton from "../ui/ProjectCardSkeleton";
 
 
-interface Project {
+export interface Project {
     id: string;
     title: string;
     picture: string;
@@ -21,7 +21,7 @@ interface Project {
 
 interface ProjectsProps {
     initialData?: {
-        success: boolean;
+        type: string;
         data: Project[];
     };
 }
@@ -30,60 +30,67 @@ const INITIAL_LOAD = 4;
 const LOAD_MORE_COUNT = 4;
 
 function Projects({ initialData }: ProjectsProps) {
-    const [allProjects, setAllProjects] = useState<Project[]>(initialData?.data || []);
+
+    const [projects, setProjects] = useState(initialData?.data ?? []);
+    const [isLoading, setIsLoading] = useState(!initialData?.data?.length);
     const [visibleCount, setVisibleCount] = useState(INITIAL_LOAD);
-    const [loading, setLoading] = useState(!initialData);
-    const [error, setError] = useState<string | null>(null);
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
-    // Only fetch if no initial data (client-side fallback)..
     useEffect(() => {
-        if (initialData?.data) return;
+        if (initialData?.data?.length) return;
 
-        const fetchProjects = async () => {
+        const controller = new AbortController();
+
+        const fetchDemoProjects = async () => {
             try {
-                setLoading(true);
-                const res = await fetch('/api/projects');
+                setIsLoading(true);
 
-                if (!res.ok) throw new Error('Failed to fetch');
+                const result = await fetch("/api/projects", {
+                    signal: controller.signal,
+                });
+                if (!result.ok) throw new Error('Failed to fetch');
 
-                const data = await res.json();
-                if (data.success) setAllProjects(data.data);
-                else throw new Error("Invalid response");
-
+                const data = await result.json();
+                setProjects(data.projects);
             } catch (error) {
-                setError(error instanceof Error ? error.message : "Error occurred");
+                console.error('Project fetch failed', error);
             } finally {
-                setLoading(false);
+                setIsLoading(false);
             }
         };
 
-        fetchProjects();
-    }, [initialData]);
+        fetchDemoProjects();
+
+        return () => controller.abort();
+
+    }, [initialData?.data?.length]);
 
     // Infinite scroll
     useEffect(() => {
-        if (visibleCount >= allProjects.length) return;
+        if (!loadMoreRef.current) return;
+        if (visibleCount >= projects.length) return;
 
         const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    setVisibleCount(prev => prev + LOAD_MORE_COUNT);
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setVisibleCount((prev) => prev + LOAD_MORE_COUNT);
                 }
             },
-            { rootMargin: '400px' }
+            { rootMargin: "400px" }
         );
 
-        if (loadMoreRef.current) observer.observe(loadMoreRef.current);
-        return () => observer.disconnect();
-    }, [visibleCount, allProjects.length]);
+        observer.observe(loadMoreRef.current);
 
-    const visibleProjects = allProjects.slice(0, visibleCount);
+        return () => observer.disconnect();
+
+    }, [visibleCount, projects.length]);
+
+    const visibleProjects = projects.slice(0, visibleCount);
 
     // Loading stage..
-    if (loading) {
+    if (isLoading) {
         return (
-            <div className="w-full px-2 pt-15 pb-5 max-w-[1540px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="w-full px-2 pt-15 pb-5 max-w-385 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {Array.from({ length: INITIAL_LOAD }, (_, i) => (
                     <ProjectCardSkeleton key={i} />
                 ))}
@@ -91,27 +98,19 @@ function Projects({ initialData }: ProjectsProps) {
         );
     }
 
-    if (error && allProjects.length === 0) {
+    if (!projects.length) {
         return (
-            <div className="w-full flex flex-col items-center justify-center min-h-64 p-4">
-                <div className="text-center max-w-md">
-                    <p className="text-red-500 mb-4">⚠️ {error}</p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="bg-orange-500/30 text-white px-6 py-2 rounded-lg hover:bg-orange-600/40 transition-colors cursor-pointer"
-                    >
-                        Retry
-                    </button>
-                </div>
+            <div className="w-full flex justify-center items-center min-h-64 text-orange-400">
+                No projects found 🚧
             </div>
         );
     }
 
     return (
-        <div className="w-full px-2 pt-15 pb-5 max-w-[1540px] overflow-y-auto ">
+        <div className="w-full px-2 pt-15 pb-5 max-w-385 overflow-y-auto ">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {visibleProjects.map((item, index) => (
-                    <div key={`${item.id}-${index}`}
+                    <div key={item.id}
                         className="project-card-animate">
                         <ProjectCard
                             url={item.picture}
@@ -126,7 +125,7 @@ function Projects({ initialData }: ProjectsProps) {
                 ))}
             </div>
 
-            {visibleCount < allProjects.length && (
+            {visibleCount < projects.length && (
                 <div ref={loadMoreRef} className="h-20 flex justify-center items-center">
                     <div className="text-orange-500/80 text-sm">Scroll to load more...</div>
                 </div>

@@ -1,0 +1,526 @@
+{
+  "type": "success",
+  "projects": [
+    {
+      "id": "2Ev2tVfGV83oTIfx22Xh",
+      "title": "portfolio-2.0",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1764431270/dev-profile_uploads/ck0mgh93xr6nbfdh3zdk.png",
+      "pictureID": "dev-profile_uploads/ck0mgh93xr6nbfdh3zdk",
+      "description": "A modern, high-performance portfolio website built with Next.js 16+, featuring stunning 3D animations, smooth interactions, excellent performance scores, and an AI-powered personal assistant.",
+      "usedTec": [
+        {
+          "value": "nx",
+          "label": "Next.js"
+        },
+        {
+          "value": "ts",
+          "label": "TypeScript"
+        },
+        {
+          "value": "tw",
+          "label": "Tailwindcss."
+        },
+        {
+          "value": "threeJs",
+          "label": "Three.js"
+        },
+        {
+          "value": "nodeJs",
+          "label": "Node.js"
+        },
+        {
+          "value": "exJs",
+          "label": "Express.js"
+        }
+      ],
+      "demoURL": "https://github.com/psathul073/portfolio-2.0",
+      "liveURL": "https://portfolio-2-0-five-zeta.vercel.app",
+      "createdAt": {
+        "_seconds": 1764431271,
+        "_nanoseconds": 402000000
+      },
+      "status": "public"
+    },
+    {
+      "id": "l9pV56GaVzghb8W4ck5g",
+      "title": "MyCart-eCommerce",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1764430818/dev-profile_uploads/dgpywrxyqim2wiaexpek.png",
+      "pictureID": "dev-profile_uploads/dgpywrxyqim2wiaexpek",
+      "description": "A complete MERN-based eCommerce platform featuring authentication, JWT authorization, role-based admin panel, payment integration, and advanced user features like cart, wishlist, orders, reviews, and profile management. Built for scalability, security, and real-world use — MyCart delivers the complete shopping experience.",
+      "usedTec": [
+        {
+          "value": "react",
+          "label": "React"
+        },
+        {
+          "value": "tw",
+          "label": "Tailwindcss."
+        },
+        {
+          "value": "nodeJs",
+          "label": "Node.js"
+        },
+        {
+          "value": "exJs",
+          "label": "Express.js"
+        },
+        {
+          "value": "mdb",
+          "label": "MongoDB"
+        },
+        {
+          "value": "cy",
+          "label": "Cloudinary"
+        },
+        {
+          "value": "axios",
+          "label": "Axios"
+        },
+        {
+          "value": "rq",
+          "label": "React Query"
+        }
+      ],
+      "demoURL": "https://github.com/psathul073/MyCart_frontend",
+      "liveURL": "https://mycarttt.netlify.app/",
+      "createdAt": {
+        "_seconds": 1764430819,
+        "_nanoseconds": 900000000
+      },
+      "status": "public"
+    },
+    {
+      "id": "88byiv2Y2RLH0axtukGS",
+      "title": "Digi Docs",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755186813/dev-profile_uploads/lnkdhx9txaw3d4wcs5hd.webp",
+      "pictureID": "dev-profile_uploads/lnkdhx9txaw3d4wcs5hd",
+      "description": "A secure, responsive web application to store, manage, and share government documents digitally. Includes OTP-based login, public sharing, 3D document viewing, and more.",
+      "demoURL": "https://github.com/psathul073/digi-docs",
+      "liveURL": "https://my-digi-docs.netlify.app",
+      "createdAt": {
+        "_seconds": 1755186815,
+        "_nanoseconds": 576000000
+      },
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "tw",
+          "label": "Tailwindcss."
+        },
+        {
+          "value": "react",
+          "label": "React"
+        },
+        {
+          "value": "rq",
+          "label": "React Query"
+        },
+        {
+          "value": "rr",
+          "label": "React Router"
+        },
+        {
+          "value": "nodeJs",
+          "label": "Node.js"
+        },
+        {
+          "value": "ex",
+          "label": "Express.js"
+        },
+        {
+          "value": "fb",
+          "label": "Firebase"
+        },
+        {
+          "value": "cy",
+          "label": "Cloudinary"
+        }
+      ],
+      "status": "public"
+    },
+    {
+      "id": "skPa6IYUDplmwxobPo7t",
+      "title": "Digi Panchayat",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755186586/dev-profile_uploads/js7sz3jl89egjxxpn9tx.webp",
+      "pictureID": "dev-profile_uploads/js7sz3jl89egjxxpn9tx",
+      "description": "A role-based web application built to streamline village-level governance services. Citizens can apply for services online, staff members can manage applications, and administrators can define services dynamically—all from a centralized, digital platform.",
+      "demoURL": "https://github.com/psathul073/digi-panchayat",
+      "liveURL": "https://digi-panchayath.netlify.app",
+      "createdAt": {
+        "_seconds": 1755186588,
+        "_nanoseconds": 131000000
+      },
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "tw",
+          "label": "Tailwindcss."
+        },
+        {
+          "value": "react",
+          "label": "React"
+        },
+        {
+          "value": "nodeJs",
+          "label": "Node.js"
+        },
+        {
+          "value": "ex",
+          "label": "Express.js"
+        },
+        {
+          "value": "fb",
+          "label": "Firebase"
+        },
+        {
+          "value": "rr",
+          "label": "React Router"
+        },
+        {
+          "value": "rhf",
+          "label": "React Hook Form."
+        },
+        {
+          "value": "cy",
+          "label": "Cloudinary"
+        }
+      ],
+      "status": "public"
+    },
+    {
+      "id": "vMYkOE9wvA2kOihzd0jD",
+      "title": "Dev Profile",
+      "description": "A simple and elegant developer profile page, similar to Linktree, that showcases your projects, source code demos, and social media links. This static page is fully responsive and visually appealing.",
+      "demoURL": "https://github.com/psathul073/dev-profile",
+      "liveURL": "https://dev-profiles.netlify.app",
+      "createdAt": {
+        "_seconds": 1755186246,
+        "_nanoseconds": 268000000
+      },
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "tw",
+          "label": "Tailwindcss."
+        },
+        {
+          "value": "react",
+          "label": "React"
+        },
+        {
+          "value": "rr",
+          "label": "React Router"
+        },
+        {
+          "value": "rhf",
+          "label": "React Hook Form."
+        },
+        {
+          "value": "nodeJs",
+          "label": "Node.js"
+        },
+        {
+          "value": "ex",
+          "label": "Express.js"
+        },
+        {
+          "value": "axios",
+          "label": "Axios"
+        },
+        {
+          "value": "fb",
+          "label": "Firebase"
+        },
+        {
+          "value": "cy",
+          "label": "Cloudinary"
+        }
+      ],
+      "status": "public",
+      "pictureID": "dev-profiles/lhbmvcvcniq0ai2r3lyr",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1767355191/dev-profiles/lhbmvcvcniq0ai2r3lyr.webp"
+    },
+    {
+      "id": "lMysrCrGS8TfmNkh0Pd7",
+      "title": "Chat App",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755185880/dev-profile_uploads/vfxb9b5cmlnt4mnqeuay.webp",
+      "pictureID": "dev-profile_uploads/vfxb9b5cmlnt4mnqeuay",
+      "demoURL": "https://github.com/psathul073/websocket-chat-fronted",
+      "liveURL": "https://simple-chats.netlify.app",
+      "createdAt": {
+        "_seconds": 1755185881,
+        "_nanoseconds": 332000000
+      },
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "react",
+          "label": "React"
+        },
+        {
+          "value": "fb",
+          "label": "Firebase"
+        },
+        {
+          "value": "nodeJs",
+          "label": "Node.js"
+        },
+        {
+          "value": "ex",
+          "label": "Express.js"
+        },
+        {
+          "value": "axios",
+          "label": "Axios"
+        },
+        {
+          "value": "ws",
+          "label": "Websocket"
+        },
+        {
+          "value": "cy",
+          "label": "Cloudinary"
+        },
+        {
+          "value": "sass",
+          "label": "Sass"
+        }
+      ],
+      "description": "Real-Time Chat App is a secure and responsive web-based chat platform that allows users to sign in with Google, create public or password-protected rooms, and exchange messages instantly using WebSockets. It supports image, GIF, and voice message sharing...",
+      "status": "public"
+    },
+    {
+      "id": "hrmCu4Yp18PjkK58vYKN",
+      "title": "Weather App",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755185460/dev-profile_uploads/jujanmcgrd833pd951cl.webp",
+      "pictureID": "dev-profile_uploads/jujanmcgrd833pd951cl",
+      "description": "A modern, responsive weather web application built with React and OpenWeatherMap API. It shows current weather conditions, a 5-day forecast, temperature trends, air quality index, and geolocation-based weather data.",
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "tw",
+          "label": "Tailwindcss."
+        },
+        {
+          "value": "react",
+          "label": "React"
+        }
+      ],
+      "demoURL": "https://github.com/psathul073/weather-app",
+      "liveURL": "https://weather-reports-1.netlify.app",
+      "createdAt": {
+        "_seconds": 1755185461,
+        "_nanoseconds": 439000000
+      },
+      "status": "public"
+    },
+    {
+      "id": "UkbmAkBQPEAqn0yTneJa",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755185278/dev-profile_uploads/xcajoxnutyklxh1iwulg.webp",
+      "pictureID": "dev-profile_uploads/xcajoxnutyklxh1iwulg",
+      "description": "This portfolio showcases my work as a web developer, featuring my projects, skills, and contact information. Built with modern technologies and designed for great performance and responsiveness.",
+      "createdAt": {
+        "_seconds": 1755185279,
+        "_nanoseconds": 106000000
+      },
+      "demoURL": "https://github.com/psathul073/portfolio",
+      "liveURL": "https://athulps.netlify.app/",
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "sass",
+          "label": "Sass"
+        },
+        {
+          "value": "react",
+          "label": "React"
+        },
+        {
+          "value": "js",
+          "label": "JavaScript"
+        },
+        {
+          "label": "Firebase",
+          "value": "fb"
+        },
+        {
+          "label": "Express.js",
+          "value": "ex"
+        },
+        {
+          "value": "threeJs",
+          "label": "Three.js"
+        }
+      ],
+      "title": "Portfolio-1.0",
+      "status": "public"
+    },
+    {
+      "id": "cW4S7BdLjFCtt0v8fDii",
+      "description": "Lost Movie Tracker is a full-stack web application that helps users search, track, and bookmark their favorite movies and series. Users can sign in using their Google accounts and maintain a personalized list of bookmarked content.",
+      "demoURL": "https://github.com/psathul073/lost-movie-tracker-frontend",
+      "createdAt": {
+        "_seconds": 1755184638,
+        "_nanoseconds": 395000000
+      },
+      "pictureID": "dev-profile_uploads/jpw3bj2wmb9prvazdcpe",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755185041/dev-profile_uploads/jpw3bj2wmb9prvazdcpe.webp",
+      "liveURL": "https://lost-movie-tracker.netlify.app",
+      "title": "Lost Movie Tracker",
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "css",
+          "label": "CSS"
+        },
+        {
+          "value": "react",
+          "label": "React"
+        },
+        {
+          "value": "rq",
+          "label": "React Query"
+        },
+        {
+          "value": "rr",
+          "label": "React Router"
+        },
+        {
+          "value": "rhf",
+          "label": "React Hook Form."
+        },
+        {
+          "value": "axios",
+          "label": "Axios"
+        },
+        {
+          "value": "nodeJs",
+          "label": "Node.js"
+        },
+        {
+          "value": "ex",
+          "label": "Express.js"
+        },
+        {
+          "value": "pg",
+          "label": "PostgreSQL"
+        },
+        {
+          "value": "cy",
+          "label": "Cloudinary"
+        }
+      ],
+      "status": "public"
+    },
+    {
+      "id": "19uCPLDnkBkVInghFGkx",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755184302/dev-profile_uploads/uh7fppcqcciykoxbmkis.webp",
+      "pictureID": "dev-profile_uploads/uh7fppcqcciykoxbmkis",
+      "description": "A simple React-based web tool that helps you compare your Instagram followers and following",
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "css",
+          "label": "CSS"
+        },
+        {
+          "value": "js",
+          "label": "JavaScript"
+        }
+      ],
+      "demoURL": "https://github.com/psathul073/IG-Unfollow-Checker",
+      "createdAt": {
+        "_seconds": 1755184303,
+        "_nanoseconds": 593000000
+      },
+      "public": true,
+      "liveURL": "https://unfollowers-checker.netlify.app",
+      "title": "IG Unfollow Checker",
+      "status": "private"
+    },
+    {
+      "id": "Mo6vkpS9FIrDkPTAsiWF",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755184112/dev-profile_uploads/nvc6aatga33xwtmvehl0.webp",
+      "pictureID": "dev-profile_uploads/nvc6aatga33xwtmvehl0",
+      "description": "This project is a 3D Solar System simulation built with Three.js and powered by Vite for fast development and bundling. It features animated planets orbiting a sun with realistic textures, lighting, and user interaction.",
+      "demoURL": "https://github.com/psathul073/solar-system",
+      "createdAt": {
+        "_seconds": 1755184113,
+        "_nanoseconds": 277000000
+      },
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "css",
+          "label": "CSS"
+        },
+        {
+          "value": "js",
+          "label": "JavaScript"
+        },
+        {
+          "value": "3",
+          "label": "Three.js"
+        }
+      ],
+      "liveURL": "https://solar-system-v0.netlify.app",
+      "title": "Solar System",
+      "status": "private"
+    },
+    {
+      "id": "5IAct3ciZq3LDF9gAAID",
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1755184061/dev-profile_uploads/b9f7nialsx3equqi2vrh.webp",
+      "pictureID": "dev-profile_uploads/b9f7nialsx3equqi2vrh",
+      "description": "A simple, responsive, and visually appealing static website that showcases fresh fruits. This project emphasizes clean design and user-friendly responsiveness to ensure a delightful browsing experience across all devices.",
+      "demoURL": "https://github.com/psathul073/fresh-fruits",
+      "createdAt": {
+        "_seconds": 1755184072,
+        "_nanoseconds": 106000000
+      },
+      "usedTec": [
+        {
+          "value": "html",
+          "label": "HTML"
+        },
+        {
+          "value": "js",
+          "label": "JavaScript"
+        },
+        {
+          "value": "tw",
+          "label": "Tailwindcss."
+        }
+      ],
+      "liveURL": "https://fresh-fruts.netlify.app",
+      "title": "Fresh Fruits",
+      "status": "public"
+    }
+  ]
+}

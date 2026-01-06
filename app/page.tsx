@@ -1,17 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { lazy, memo, Suspense, useCallback, useEffect, useState } from "react";
-import ChatBot from "@/components/sections/ChatBot";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useLoading } from "./context/LoadingContext";
 import { LoadingScreen } from "@/components/3d/LoadingScreen";
 
 // Dynamic import.
 const Scene = lazy(() => import("@/components/3d/Scene"));
-// Memoize components
-const MemoizedScene = memo(Scene);
-const MemoizedChatBot = memo(ChatBot);
-
+const ChatBot = lazy(() => import("@/components/sections/ChatBot"));
 
 export default function Home() {
   const router = useRouter();
@@ -40,6 +36,7 @@ export default function Home() {
     }
   }, [isLoaded, isMobile]);
 
+
   // Show loading screen until everything is 100% loaded.
   if (!isLoaded) {
     return <LoadingScreen progress={progress} />;
@@ -52,14 +49,27 @@ export default function Home() {
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(249, 115, 22, 0.25), transparent 70%), #000000",
+          background: `
+    radial-gradient(
+      ellipse 80% 60% at 50% 10%,
+      rgba(255, 159, 28, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 120% 80% at 50% 0%,
+      #1f1b16,
+      #0a0a0a 70%
+    )
+  `
         }}
+
       />
+
       {show3D && <Suspense fallback={<div className=" absolute inset-0 z-0 flex items-center justify-center text-orange-100">Loading 3D Experience...</div>}>
-        <MemoizedScene onNavigate={handleNavigate} onClick={handleClick} />
+        <Scene onNavigate={handleNavigate} onClick={handleClick} />
       </Suspense>}
       {/* Chat box */}
-      {(isMobile || openChatBox) && <MemoizedChatBot setOpenChatBox={setOpenChatBox} />}
+      {(isMobile || openChatBox) && <ChatBot setOpenChatBox={setOpenChatBox} />}
     </div>
   );
 }

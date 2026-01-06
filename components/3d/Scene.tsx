@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import ModelScene from './ModelScene';
 import { useLoading } from '@/app/context/LoadingContext';
+import { memo } from 'react';
 
 interface ScenePropType {
     onNavigate: () => void,
@@ -9,7 +10,7 @@ interface ScenePropType {
 }
 
 
-export default function Scene({ onNavigate, onClick }: ScenePropType) {
+ function Scene({ onNavigate, onClick }: ScenePropType) {
     const { isMobile } = useLoading();
 
     return (
@@ -52,3 +53,4 @@ export default function Scene({ onNavigate, onClick }: ScenePropType) {
     )
 }
 
+export default memo(Scene)

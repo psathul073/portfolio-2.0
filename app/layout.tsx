@@ -1,6 +1,7 @@
 import { Geist, Fira_Code } from "next/font/google";
 import Navbar from "@/components/ui/Navbar";
 import type { Metadata } from "next";
+import { ToastProvider } from "d9-toast";
 import ConditionalLoading from "./conditional-loading";
 import "./globals.css";
 
@@ -43,7 +44,9 @@ export default function RootLayout({
       >
         <Navbar />
         <ConditionalLoading>
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </ConditionalLoading>
       </body>
     </html>

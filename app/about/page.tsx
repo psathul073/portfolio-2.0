@@ -14,8 +14,20 @@ function Page() {
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "radial-gradient(125% 125% at 50% 100%, #000000 40%, #2b0707 100%)",
+          background: `
+    radial-gradient(
+      ellipse 80% 60% at 50% 10%,
+      rgba(255, 159, 28, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 120% 80% at 50% 0%,
+      #1f1b16,
+      #0a0a0a 70%
+    )
+  `
         }}
+
       />
 
       <Suspense fallback={null}>

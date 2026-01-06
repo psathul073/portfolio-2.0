@@ -2,7 +2,7 @@
 
 import { Plus, User } from "lucide-react";
 import TypeWriter from "../TypeWriter";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { JSX, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Add constants outside component to prevent re-renders...
@@ -52,13 +52,26 @@ function Terminal() {
     const [showContacts, setShowContacts] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [isMobile, setIsMobile] = useState<boolean>(false);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const bottomRef = useRef<HTMLDivElement | null>(null);
+    const userScrolledUpRef = useRef<boolean>(false);
     const router = useRouter();
+
+    // handle scroll
+    const handleScroll = useCallback(() => {
+        const el = containerRef?.current;
+        if (!el) return;
+        const isAtBottom =
+            el.scrollTop + el.clientHeight >= el.scrollHeight - 20;
+
+        userScrolledUpRef.current = !isAtBottom;
+    }, []);
 
 
     // Mobile detection
     useEffect(() => {
 
-        const checkMobile = () => {
+        const checkMobile: () => void = () => {
             const mobile = window.innerWidth < 768;
             setIsMobile(mobile);
         };
@@ -72,7 +85,7 @@ function Terminal() {
         }
     }, []);
 
-    const onKeyDown = useCallback((e: KeyboardEvent) => {
+    const onKeyDown: (e: KeyboardEvent) => void = useCallback((e: KeyboardEvent) => {
 
         const { key, code } = e;
 
@@ -117,7 +130,7 @@ function Terminal() {
         return () => document.removeEventListener("keydown", onKeyDown)
     }, [onKeyDown]);
 
-    const quickActionClick = useCallback((key: string) => {
+    const quickActionClick: (key: string) => void = useCallback((key: string) => {
         switch (key) {
             case "H":
                 router.push('/contact');
@@ -135,11 +148,11 @@ function Terminal() {
     }, [router]);
 
     // Memoize header part to prevent re-renders.
-    const Header = useMemo(() => (
+    const Header: JSX.Element = useMemo(() => (
         <div className="w-full inline-flex justify-between items-center gap-2 px-3 py-2 bg-neutral-900 rounded-2xl rounded-b-none font-fira-code">
             <div className=" inline-flex items-center justify-evenly gap-2.5 font-fira-code bg-neutral-800/50 p-2 rounded-t-2xl text-orange-100 ">
                 <User size={18} className="shrink-0 text-orange-400" aria-hidden="true" />
-                <p className=" max-sm:text-sm select-none">d9_coder@Iam-athul:~</p>
+                <p className=" max-sm:text-xs text-sm select-none">d9_coder@Iam-athul:~</p>
                 <Plus size={18} className="shrink-0" aria-hidden="true" />
             </div>
             <div className=" inline-flex items-center justify-evenly gap-4">
@@ -151,7 +164,7 @@ function Terminal() {
     ), []);
 
     // Memoize interactive elements
-    const InterActiveElements = useMemo(() => {
+    const InterActiveElements: JSX.Element | null = useMemo(() => {
         if (!showContacts || loading) return null;
         return (
             <div className=" flex flex-col items-start space-y-3 font-fira-code">
@@ -185,24 +198,26 @@ function Terminal() {
     }, [isMobile, showContacts, loading, quickActionClick]);
 
     return (
-        <div className=" relative z-40 h-[600px] w-full max-w-[1440px] bg-neutral-950 border border-neutral-900 rounded-2xl p-[1] overflow-hidden">
+        <div className=" relative z-40 h-[600px] w-full max-w-[1440px] bg-neutral-950 border border-neutral-800/50 rounded-2xl p-[1] overflow-hidden">
 
             {/* Moving Border */}
-            { <div className="rotating-conic-border" aria-hidden="true"></div>}
+            {<div className=" max-sm:hidden rotating-conic-border" aria-hidden="true"></div>}
 
             {/* Overlay */}
             <div className="absolute inset-px bg-neutral-950 rounded-2xl z-10"></div>
 
             {/* Main Content */}
-            <div className="relative z-20 h-full">
-
+            <div className="relative z-20 h-full overflow-hidden">
                 {/* Header */}
                 {Header}
 
                 {/* Terminal Content */}
-                <div className=" relative h-[540px] p-3.5 space-y-4 text-orange-100 cursor-text overflow-y-auto">
-                    <p className=" text-lime-500">
-                        d9_coder@Iam-athul:<span className="text-blue-500">~</span>
+                <div ref={containerRef}
+                    onScroll={handleScroll}
+                    className=" relative h-[540px] p-3.5 space-y-4 mb-6 text-orange-100 cursor-text overflow-y-auto">
+
+                    <p className=" text-sm text-lime-500">
+                        d9_coder@Iam-athul : <span className="text-blue-500">~</span>
                         <span className="text-orange-50">$ About Me</span>
                     </p>
 
@@ -221,8 +236,10 @@ function Terminal() {
                     {showAbout &&
                         <TypeWriter
                             text={aboutMeText.trim()}
-                            textSpeed={isMobile? 20 : 30}
+                            textSpeed={isMobile ? 20 : 30}
                             loading={setLoading}
+                            scrollContainerRef={containerRef}
+                            userScrolledUpRef={userScrolledUpRef}
                         />}
 
                     {/* Contact Prompt */}
@@ -242,15 +259,18 @@ function Terminal() {
                             text={contactText}
                             textSpeed={isMobile ? 20 : 30}
                             loading={setLoading}
+                            scrollContainerRef={containerRef}
+                            userScrolledUpRef={userScrolledUpRef}
                         />}
 
                     {/*Quick actions */}
                     {InterActiveElements}
 
+
+                    <div ref={bottomRef} />
+
                 </div>
-
             </div>
-
         </div>
     )
 }

@@ -47,11 +47,24 @@ const Page = () => {
 
   return (
     <main className="h-screen w-full bg-black relative">
+     
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "radial-gradient(125% 125% at 50% 100%, #000000 40%, #2b0707 100%)",
+          background: `
+    radial-gradient(
+      ellipse 80% 60% at 50% 10%,
+      rgba(255, 159, 28, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 120% 80% at 50% 0%,
+      #1f1b16,
+      #0a0a0a 70%
+    )
+  `
         }}
+
       />
 
       {/* Contact Box */}
@@ -66,8 +79,8 @@ const Page = () => {
       {/* 3D Scene */}
       {mounted && !isMobile && (
         <Suspense fallback={
-          <div className="absolute inset-0 z-10 flex items-center justify-center ">
-            <div className="text-orange-100">3D Loading...</div>
+          <div className=" max-sm:hidden absolute top-1/2 -translate-y-1/2 right-1/5 z-10 flex items-center ">
+            <div className=" text-orange-100">3D Loading...</div>
           </div>}>
           {show3D && (
             <div className="absolute inset-0 z-10">

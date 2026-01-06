@@ -1,10 +1,11 @@
 "use client";
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, memo, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SendHorizonal, Minimize2, Maximize2, Bot } from "lucide-react";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import { useLoading } from "@/app/context/LoadingContext";
-import { AnimatePresence, motion, Variants } from "motion/react";
+import { AnimatePresence, motion, Variants } from "framer-motion";
+import { useToast } from "d9-toast";
 
 type messagesType = {
     sender: string;
@@ -63,7 +64,7 @@ const floatingButtonVariants: Variants = {
 };
 
 
-export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
+function ChatBot({ setOpenChatBox }: ChatBotPropType) {
 
     const { isMobile } = useLoading();
     const [messages, setMessages] = useState<messagesType>([
@@ -80,9 +81,19 @@ export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
     const abortControllerRef = useRef<AbortController | null>(null);
     const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
     const chatBoxRef = useRef<HTMLDivElement>(null);
+    const { sounds, showToast } = useToast();
 
     // Memoized health check.
-    const checkHealth = useCallback(async () => {
+    const checkHealth: () => Promise<void> = useCallback(async (): Promise<void> => {
+
+        if (!isOnline) {
+            showToast({
+                type: 'info',
+                message: "Checking assistant status…",
+                title: false,
+                theme: 'dark',
+            });
+        }
 
         // Clean up any previous requests.
         if (abortControllerRef.current) {
@@ -99,7 +110,7 @@ export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
         }, 5000);
 
         try {
-            const res = await fetch("https://portfolio-assistant-csi7.onrender.com/", {
+            const res: Response = await fetch("https://portfolio-assistant-csi7.onrender.com/", {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
                 signal: abortControllerRef.current.signal
@@ -109,19 +120,42 @@ export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
 
             if (!res.ok) throw new Error('API response error');
 
-            const data = await res.text();
-            if (data) setIsOnline(true);
+            const data: string = await res.text();
+
+            if (data) {
+                showToast({
+                    message: "Assistant is online now, Ready to help...",
+                    title: false,
+                    theme: 'dark',
+                    audio: {
+                        volume: 0.8,
+                        audioFile: sounds.success,
+                    },
+                });
+
+                setIsOnline(true);
+            }
             console.log("API Response:", data);
 
         } catch (error: unknown) {
             clearTimeout(timeoutIdRef.current);
             if (error instanceof Error && error.name !== 'AbortError') {
                 console.error("Fetch Error:", error);
+                showToast({
+                    type: 'error',
+                    message: "Assistant is offline now, Not Ready to help !",
+                    title: false,
+                    theme: 'dark',
+                    audio: {
+                        volume: 0.8,
+                        audioFile: sounds.warning,
+                    },
+                });
                 setIsOnline(false);
             }
             // Silently handle abort errors...
         }
-    }, []);
+    }, [showToast, sounds]);
 
     useEffect(() => {
         checkHealth();
@@ -136,7 +170,7 @@ export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
     }, [checkHealth]);
 
     // Auto-scroll to bottom when new messages arrive.
-    const scrollToBottom = () => {
+    const scrollToBottom: () => void = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -148,7 +182,7 @@ export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
     console.log("Chat box component rendering");
 
     // Chat box resize function
-    const handleResizing = useCallback(() => {
+    const handleResizing: () => void = useCallback(() => {
         setIsMinimized(prev => !prev);
     }, []);
 
@@ -157,36 +191,38 @@ export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
     useOutsideClick(chatBoxRef, () => setOpenChatBox(false));
 
     // Memoized message send function.
-    const sendMessage = useCallback(async () => {
-        if (!isOnline || !input.trim() || isLoading) return;
-        const userQuestion = input.trim();
-        setMessages(preMsg => [...preMsg, { sender: 'user', text: userQuestion }]);
-        setInput("");
-        setIsLoading(true);
+    const sendMessage: () => Promise<void>
+        = useCallback(async () => {
+            if (!isOnline || !input.trim() || isLoading) return;
+            const userQuestion = input.trim();
+            setMessages(preMsg => [...preMsg, { sender: 'user', text: userQuestion }]);
+            setInput("");
+            setIsLoading(true);
 
-        try {
-            const res = await fetch("https://portfolio-assistant-csi7.onrender.com/api/ask", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ question: userQuestion })
-            });
+            try {
+                const res: Response = await fetch("https://portfolio-assistant-csi7.onrender.com/api/ask", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ question: userQuestion })
+                });
 
-            const data = await res.json();
-            setMessages(prevMsg => [...prevMsg, { sender: "bot", text: data.answer || "I apologize, but I'm having trouble processing your question right now." }]);
-        } catch (error) {
-            console.error("chat error", error);
-            setMessages(prevMsg => [...prevMsg, {
-                sender: "bot",
-                text: "I'm currently experiencing connection issues. Please try again in a moment or check out my portfolio directly."
-            }]);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [input, isLoading, isOnline]);
+                const data: { answer: string } = await res.json();
+                setMessages(prevMsg => [...prevMsg, { sender: "bot", text: data.answer || "I apologize, but I'm having trouble processing your question right now." }]);
+
+            } catch (error) {
+                console.error("chat error", error);
+                setMessages(prevMsg => [...prevMsg, {
+                    sender: "bot",
+                    text: "I'm currently experiencing connection issues. Please try again in a moment or check out my portfolio directly."
+                }]);
+            } finally {
+                setIsLoading(false);
+            }
+        }, [input, isLoading, isOnline]);
 
 
     // Memoized quick questions suggestions.
-    const quickQuestions = useMemo(() => [
+    const quickQuestions: string[] = useMemo(() => [
         "What technologies does he use?",
         "Tell me about his projects?",
         "What services does he provide?",
@@ -194,12 +230,12 @@ export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
     ], []);
 
     // Handle quick question click.
-    const handleQuickQuestionClick = useCallback((question: string) => {
+    const handleQuickQuestionClick = useCallback((question: string): void => {
         setInput(question);
     }, []);
 
     // Handle input keydown.
-    const handleInputKeyDown = useCallback((e: React.KeyboardEvent) => {
+    const handleInputKeyDown = useCallback((e: React.KeyboardEvent): void => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
@@ -388,3 +424,5 @@ export default function ChatBot({ setOpenChatBox }: ChatBotPropType) {
         </AnimatePresence>
     )
 }
+
+export default memo(ChatBot);

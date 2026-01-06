@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useCallback, memo, useRef } from "react";
 import { ArrowDownLeft, Package, Mail, User, ChevronsDownIcon, ChevronsUp } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import useOutsideClick from "@/hooks/useOutsideClick";
 
-const NAV_ITEM_CLASS = "relative inline-flex items-center justify-between py-2.5 px-4 shadow-3xl ring-1 ring-orange-500/10 shadow-3xl shadow-orange-900/30 backdrop-blur-xs rounded-3xl cursor-pointer select-none";
-const DEMO_NAV_ITEM_CLASS = "text-orange-200 mt-3 bg-amber-50/20 p-1 rounded-full backdrop-blur-xs cursor-pointer";
+
+const NAV_ITEM_CLASS = "relative inline-flex items-center justify-between py-2.5 px-4 backdrop-blur-md rounded-full border border-white/10 shadow-inner hover:-translate-y-[2px] hover:shadow-[0_10px_30px_rgba(255,159,28,0.35)] transition-all duration-200 cursor-pointer select-none";
+const DEMO_NAV_ITEM_CLASS = "text-orange-50/90 mt-3 bg-amber-50/20 p-1 rounded-full backdrop-blur-xs cursor-pointer";
 const ICON_SIZE = 29;
 
 // Animation variants
@@ -22,11 +23,17 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: -10 },
-  visible: { opacity: 1, y: 0 },
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: -8, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: "spring", stiffness: 300, damping: 20 }
+  },
   exit: { opacity: 0, y: -5 }
 };
+
 
 const arrowVariants = {
   normal: { rotate: 0 },
@@ -36,16 +43,16 @@ const arrowVariants = {
 const NavItem = memo(({ href, label, icon: Icon, className, width }: {
   href: string;
   label: string;
-  icon: React.ComponentType<{ size?: number }>;
+  icon: React.ComponentType<{ size?: number, className?: string }>;
   className: string;
   width: string;
 }) => (
   <motion.div variants={itemVariants} >
     <div className={`${NAV_ITEM_CLASS} ${width} mt-4 ${className} hover:scale-105 active:scale-95 transition-transform`}>
-      <Link href={href} className="w-full hover:opacity-80 transition-opacity">
+      <Link href={href} className="w-full hover:opacity-80 transition-opacity text-orange-50/90">
         {label}
       </Link>
-      <Icon size={ICON_SIZE} />
+      <Icon size={ICON_SIZE} className="text-orange-50/70" />
     </div>
   </motion.div>
 ));
@@ -90,7 +97,7 @@ function Navbar() {
 
         {/* Logo */}
         <motion.div
-          className={`${NAV_ITEM_CLASS} w-[300px] bg-orange-500/50  `}
+          className={`${NAV_ITEM_CLASS} w-[300px] bg-[linear-gradient(180deg,rgba(255,159,28,0.95),rgba(217,119,6,0.95))] shadow-[0_6px_20px_rgba(255,159,28,0.35)]`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           initial={false}
@@ -126,21 +133,22 @@ function Navbar() {
                 href="/projects"
                 label="PROJECTS"
                 icon={Package}
-                className="bg-orange-400/50"
+                className="bg-[rgba(255,159,28,0.7)] shadow-[0_4px_14px_rgba(255,159,28,0.25)]"
                 width="w-[250px]"
               />
               <NavItem
                 href="/about"
                 label="ABOUT"
                 icon={User}
-                className="bg-orange-300/50"
+                className="bg-[rgba(255,159,28,0.5)] shadow-[0_3px_10px_rgba(255,159,28,0.2)]"
                 width="w-[200px]"
               />
               <NavItem
                 href="/contact"
                 label="CONTACT"
                 icon={Mail}
-                className="bg-orange-200/50"
+                className="bg-[rgba(255,159,28,0.35)] shadow-[0_2px_8px_rgba(255,159,28,0.15)]"
+
                 width="w-[150px]"
               />
 

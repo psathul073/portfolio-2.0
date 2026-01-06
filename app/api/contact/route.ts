@@ -1,9 +1,11 @@
+export const runtime = "nodejs";
+
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<Response> {
     try {
         const { name, email, message } = await req.json();
 
