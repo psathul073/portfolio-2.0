@@ -40,7 +40,7 @@ function Projects({ initialData }: ProjectsProps) {
     const [visibleCount, setVisibleCount] = useState(INITIAL_LOAD);
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
-    
+
     useEffect(() => {
         if (initialData?.data?.length) return;
 
@@ -114,21 +114,28 @@ function Projects({ initialData }: ProjectsProps) {
     return (
         <div className="w-full px-2 pt-15 pb-5 max-w-385 overflow-y-auto ">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {visibleProjects.map((item, index) => (
-                    <div key={item.id}
-                        className="project-card-animate">
-                        <ProjectCard
-                            url={item.picture}
-                            title={item.title}
-                            badge={item.badge[0]}
-                            description={item.description}
-                            labels={item.usedTec}
-                            liveLink={item.liveURL}
-                            repoLink={item.demoURL}
-                            priority={index < 2}
-                        />
-                    </div>
-                ))}
+                {visibleProjects.map((item, index) => {
+                        
+                    const badge = (item.badge[0] !== undefined && item.badge[0] !== null) ? item.badge[0] : {
+                        value: 'badge1',
+                        label: 'FEATURED',
+                    };
+                    return (
+                        <div key={item.id}
+                            className="project-card-animate">
+                            <ProjectCard
+                                url={item.picture}
+                                title={item.title}
+                                badge={badge}
+                                description={item.description}
+                                labels={item.usedTec}
+                                liveLink={item.liveURL}
+                                repoLink={item.demoURL}
+                                priority={index < 2}
+                            />
+                        </div>
+                    )
+                })}
             </div>
 
             {visibleCount < projects.length && (
