@@ -4,6 +4,33 @@ import { CodeXml } from "lucide-react";
 import Image from "next/image";
 import { useCallback, memo } from "react";
 
+type BadgeKey = 'badge1' | 'badge2' | 'badge3' | 'badge4';
+
+type BadgeConfig = {
+    label: string;
+    class: string;
+};
+
+const BADGE_CONFIG: Record<BadgeKey, BadgeConfig> = {
+    badge1: {
+        label: "NEW",
+        class: "bg-blue-900/50 text-blue-700",
+    },
+    badge2: {
+        label: "POPULAR",
+        class: "bg-amber-900/50 text-amber-700",
+    },
+    badge3: {
+        label: "FEATURED",
+        class: "bg-emerald-900/50 text-emerald-700",
+    },
+    badge4: {
+        label: "UPCOMING",
+        class: "bg-indigo-900/50 text-indigo-700",
+    },
+};
+
+
 interface ProjectCardPropType {
     url: string;
     title: string;
@@ -44,20 +71,21 @@ const ProjectCard = memo(function ProjectCard({
         handleAction(liveLink);
     }, [handleAction, liveLink]);
 
+    const badgeKey = badge.value as BadgeKey;
+
+    const config = BADGE_CONFIG[badgeKey] ?? {
+        label: badge.label,
+        class: "bg-indigo-900/50 text-indigo-700",
+    };
+
     return (
         <div className=" group h-[520px] max-sm:w-[310px] max-w-[350px] mx-auto flex flex-col rounded-2xl 
          bg-[#0B0B0E]/95 border max-sm:border-[#C89B3C]/20 border-[#C89B3C]/10 shadow-[0_0_40px_rgba(200,155,60,0.15)]
          text-orange-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(234,124,20,0.25)] cursor-pointer " >
+         
             {/* badge */}
-            <span className={`${badge.value === "badge1"
-                ? "bg-blue-900/50  text-blue-700 "
-                : badge.value === "badge2"
-                    ? "bg-amber-900/50  text-amber-700 "
-                    : badge.value === "badge3"
-                        ? "bg-emerald-900/50  text-emerald-700 "
-                        : "bg-indigo-900/50 text-indigo-700 "
-                } z-10 absolute top-3.5 left-3.5 text-xs font-semibold px-2 py-1 rounded-md backdrop-blur-xs`}>
-                {badge.label}
+            <span className={`${config.class} z-10 absolute top-3.5 left-3.5 text-xs font-semibold px-2 py-1 rounded-md backdrop-blur-xs`}>
+                {config.label}
             </span>
 
             {/* Project image */}

@@ -15,6 +15,7 @@ async function getProjects(): Promise<{type: 'success', data: Project[]}> {
     if (!res.ok) throw new Error('Failed to fetch');
 
     const rawData = await res.json();
+    
     return { type: "success", data: rawData.projects };
     
   } catch (error) {

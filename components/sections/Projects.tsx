@@ -117,7 +117,7 @@ function Projects({ initialData }: ProjectsProps) {
                 {visibleProjects.map((item, index) => {
                         
                     const badge = item.badge?.[0] ?? {
-                        value: 'badge1',
+                        value: 'badge3',
                         label: 'FEATURED',
                     };
                     return (

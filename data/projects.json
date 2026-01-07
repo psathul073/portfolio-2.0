@@ -39,7 +39,13 @@
         "_seconds": 1764431271,
         "_nanoseconds": 402000000
       },
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "value": "badge1",
+          "label": "NEW"
+        }
+      ]
     },
     {
       "id": "l9pV56GaVzghb8W4ck5g",
@@ -87,7 +93,13 @@
         "_seconds": 1764430819,
         "_nanoseconds": 900000000
       },
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "label": "FEATURED",
+          "value": "badge3"
+        }
+      ]
     },
     {
       "id": "88byiv2Y2RLH0axtukGS",
@@ -139,7 +151,13 @@
           "label": "Cloudinary"
         }
       ],
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "value": "badge3",
+          "label": "FEATURED"
+        }
+      ]
     },
     {
       "id": "skPa6IYUDplmwxobPo7t",
@@ -191,7 +209,13 @@
           "label": "Cloudinary"
         }
       ],
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "label": "FEATURED",
+          "value": "badge3"
+        }
+      ]
     },
     {
       "id": "vMYkOE9wvA2kOihzd0jD",
@@ -247,7 +271,13 @@
       ],
       "status": "public",
       "pictureID": "dev-profiles/lhbmvcvcniq0ai2r3lyr",
-      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1767355191/dev-profiles/lhbmvcvcniq0ai2r3lyr.webp"
+      "picture": "https://res.cloudinary.com/dwwryprl0/image/upload/v1767355191/dev-profiles/lhbmvcvcniq0ai2r3lyr.webp",
+      "badge": [
+        {
+          "label": "POPULAR",
+          "value": "badge2"
+        }
+      ]
     },
     {
       "id": "lMysrCrGS8TfmNkh0Pd7",
@@ -299,7 +329,13 @@
         }
       ],
       "description": "Real-Time Chat App is a secure and responsive web-based chat platform that allows users to sign in with Google, create public or password-protected rooms, and exchange messages instantly using WebSockets. It supports image, GIF, and voice message sharing...",
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "label": "FEATURED",
+          "value": "badge3"
+        }
+      ]
     },
     {
       "id": "hrmCu4Yp18PjkK58vYKN",
@@ -327,7 +363,13 @@
         "_seconds": 1755185461,
         "_nanoseconds": 439000000
       },
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "label": "FEATURED",
+          "value": "badge3"
+        }
+      ]
     },
     {
       "id": "UkbmAkBQPEAqn0yTneJa",
@@ -371,7 +413,13 @@
         }
       ],
       "title": "Portfolio-1.0",
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "label": "FEATURED",
+          "value": "badge3"
+        }
+      ]
     },
     {
       "id": "cW4S7BdLjFCtt0v8fDii",
@@ -431,7 +479,13 @@
           "label": "Cloudinary"
         }
       ],
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "value": "badge2",
+          "label": "POPULAR"
+        }
+      ]
     },
     {
       "id": "19uCPLDnkBkVInghFGkx",
@@ -460,7 +514,13 @@
       "public": true,
       "liveURL": "https://unfollowers-checker.netlify.app",
       "title": "IG Unfollow Checker",
-      "status": "private"
+      "status": "private",
+      "badge": [
+        {
+          "value": "badge3",
+          "label": "FEATURED"
+        }
+      ]
     },
     {
       "id": "Mo6vkpS9FIrDkPTAsiWF",
@@ -492,7 +552,13 @@
       ],
       "liveURL": "https://solar-system-v0.netlify.app",
       "title": "Solar System",
-      "status": "private"
+      "status": "private",
+      "badge": [
+        {
+          "label": "FEATURED",
+          "value": "badge3"
+        }
+      ]
     },
     {
       "id": "5IAct3ciZq3LDF9gAAID",
@@ -520,7 +586,13 @@
       ],
       "liveURL": "https://fresh-fruts.netlify.app",
       "title": "Fresh Fruits",
-      "status": "public"
+      "status": "public",
+      "badge": [
+        {
+          "value": "badge3",
+          "label": "FEATURED"
+        }
+      ]
     }
   ]
 }
