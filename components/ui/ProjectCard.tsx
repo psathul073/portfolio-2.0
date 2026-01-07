@@ -14,19 +14,19 @@ type BadgeConfig = {
 const BADGE_CONFIG: Record<BadgeKey, BadgeConfig> = {
     badge1: {
         label: "NEW",
-        class: "bg-blue-900/50 text-blue-700",
+        class: "bg-blue-900/30 text-blue-700",
     },
     badge2: {
         label: "POPULAR",
-        class: "bg-amber-900/50 text-amber-700",
+        class: "bg-amber-900/30 text-amber-700",
     },
     badge3: {
         label: "FEATURED",
-        class: "bg-emerald-900/50 text-emerald-700",
+        class: "bg-emerald-900/30 text-emerald-700",
     },
     badge4: {
         label: "UPCOMING",
-        class: "bg-indigo-900/50 text-indigo-700",
+        class: "bg-indigo-900/30 text-indigo-700",
     },
 };
 
@@ -79,12 +79,12 @@ const ProjectCard = memo(function ProjectCard({
     };
 
     return (
-        <div className=" group h-[520px] max-sm:w-[310px] max-w-[350px] mx-auto flex flex-col rounded-2xl 
+        <div className=" group relative h-[520px] max-sm:w-[310px] max-w-[350px] mx-auto flex flex-col rounded-2xl 
          bg-[#0B0B0E]/95 border max-sm:border-[#C89B3C]/20 border-[#C89B3C]/10 shadow-[0_0_40px_rgba(200,155,60,0.15)]
          text-orange-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(234,124,20,0.25)] cursor-pointer " >
          
             {/* badge */}
-            <span className={`${config.class} z-10 absolute top-3.5 left-3.5 text-xs font-semibold px-2 py-1 rounded-md backdrop-blur-xs`}>
+            <span className={`${config.class} z-10 absolute top-3.5 left-3.5 text-xs font-semibold px-2 py-1 rounded-md backdrop-blur-md`}>
                 {config.label}
             </span>
 
@@ -109,7 +109,7 @@ const ProjectCard = memo(function ProjectCard({
 
             {/* Project details */}
             <div className="h-full overflow-hidden p-2 font-fira-code ">
-                <h2 className="text-xl font-semibold mb-2 tracking-wide">{title}</h2>
+                <h2 className="text-lg font-semibold mb-2 tracking-wide">{title}</h2>
 
                 {/* labels */}
                 <div className="flex flex-wrap gap-1.5 my-4">
