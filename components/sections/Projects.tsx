@@ -116,7 +116,7 @@ function Projects({ initialData }: ProjectsProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {visibleProjects.map((item, index) => {
                         
-                    const badge = (item.badge[0] !== undefined && item.badge[0] !== null) ? item.badge[0] : {
+                    const badge = item.badge?.[0] ?? {
                         value: 'badge1',
                         label: 'FEATURED',
                     };
