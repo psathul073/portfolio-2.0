@@ -113,7 +113,7 @@ function Terminal() {
                 window.open('https://github.com/psathul073', '_blank', 'noopener,noreferrer');
                 break;
             case "KeyD":
-                window.open('https://drive.google.com/file/d/1yAbsRhe0VZncBc8l9n4VTxNqeqSxk4CZ/view?usp=sharing', '_blank', 'noopener,noreferrer');
+                window.open('https://drive.google.com/file/d/1xPL1Yd3zuCNuZvQ-coWj5H8TaJ6YO4nc/view?usp=sharing', '_blank', 'noopener,noreferrer');
                 break;
 
             default:
@@ -149,7 +149,7 @@ function Terminal() {
 
     // Memoize header part to prevent re-renders.
     const Header: JSX.Element = useMemo(() => (
-        <div className="w-full inline-flex justify-between items-center gap-2 px-3 py-2 bg-neutral-900 rounded-2xl rounded-b-none font-fira-code">
+        <div title="Terminal to show about info" className="w-full inline-flex justify-between items-center gap-2 px-3 py-2 bg-neutral-900 rounded-2xl rounded-b-none font-fira-code">
             <div className=" inline-flex items-center justify-evenly gap-2.5 font-fira-code bg-neutral-800/50 p-2 rounded-t-2xl text-orange-100 ">
                 <User size={18} className="shrink-0 text-orange-400" aria-hidden="true" />
                 <p className=" max-sm:text-xs text-sm select-none">d9_coder@Iam-athul:~</p>
@@ -198,7 +198,7 @@ function Terminal() {
     }, [isMobile, showContacts, loading, quickActionClick]);
 
     return (
-        <div className=" relative z-40 h-[600px] w-full max-w-[1440px] bg-neutral-950 border border-neutral-800/50 rounded-2xl p-[1] overflow-hidden">
+        <div className=" relative z-40 h-[600px] w-full max-w-[1440px] bg-neutral-950 border border-white/10 rounded-2xl p-[1] overflow-hidden">
 
             {/* Moving Border */}
             {<div className=" max-sm:hidden rotating-conic-border" aria-hidden="true"></div>}
@@ -224,6 +224,7 @@ function Terminal() {
                     {/* Initial Prompt */}
                     {!showAbout &&
                         <button
+                            title="Tap or Press enter key to show about me info"
                             onClick={() => isMobile && setShowAbout(true)}
                             className={`${isMobile ? ' text-sm hover:text-lime-400 cursor-pointer' : 'cursor-text'
                                 } transition-colors`}
@@ -245,6 +246,7 @@ function Terminal() {
                     {/* Contact Prompt */}
                     {(showAbout && !showContacts && !loading) &&
                         <button
+                            title="Tap or Press shift key to show contact info"
                             onClick={() => isMobile && setShowContacts(true)}
                             className={` ${isMobile ? 'text-sm hover:text-lime-400 cursor-pointer' : 'cursor-text'
                                 } transition-colors`}

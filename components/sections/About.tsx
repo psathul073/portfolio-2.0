@@ -10,7 +10,7 @@ const About = () => {
         initial={{opacity: 0.5, y: 20}}
         animate={{ opacity: 1, y: 0}}
         transition={{ ease: 'easeOut', duration: 0.5}}
-        className=" absolute inset-0 flex items-center justify-center">
+        className=" absolute inset-0 flex items-center justify-center p-1.5">
             <Terminal />
         </motion.div>
     )

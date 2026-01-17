@@ -1,6 +1,6 @@
 "use client";
 
-import { CodeXml } from "lucide-react";
+import { Github } from "lucide-react";
 import Image from "next/image";
 import { useCallback, memo } from "react";
 
@@ -81,7 +81,7 @@ const ProjectCard = memo(function ProjectCard({
     return (
         <div className=" group relative h-[520px] max-sm:w-[310px] max-w-[350px] mx-auto flex flex-col rounded-2xl 
          bg-[#0B0B0E]/95 border max-sm:border-[#C89B3C]/20 border-[#C89B3C]/10 shadow-[0_0_40px_rgba(200,155,60,0.15)]
-         text-orange-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(234,124,20,0.25)] cursor-pointer " >
+         p-1.5 text-orange-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(234,124,20,0.25)] cursor-pointer " >
          
             {/* badge */}
             <span className={`${config.class} z-10 absolute top-3.5 left-3.5 text-xs font-semibold px-2 py-1 rounded-md backdrop-blur-md`}>
@@ -134,10 +134,11 @@ const ProjectCard = memo(function ProjectCard({
             {/* Actions */}
             <div className="px-2 py-3 w-full inline-flex items-center gap-2.5">
                 <button
+                    title="Github Repository"
                     onClick={handleRepoClick}
                     aria-label="Repo view button"
                     className=" p-2.5 rounded-xl bg-orange-300/15 hover:bg-orange-300/30 transition-colors cursor-pointer ">
-                    <CodeXml size={28} />
+                    <Github size={26} strokeWidth={1.3}/>
                 </button>
                 <button
                     onClick={handleLiveClick}

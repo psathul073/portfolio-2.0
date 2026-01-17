@@ -3,6 +3,7 @@ import Navbar from "@/components/ui/Navbar";
 import type { Metadata } from "next";
 import { ToastProvider } from "d9-toast";
 import ConditionalLoading from "./conditional-loading";
+import "d9-toast/toast.css";
 import "./globals.css";
 
 const geistSans = Geist({

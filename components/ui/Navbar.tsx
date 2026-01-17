@@ -83,6 +83,7 @@ function Navbar() {
   if (!showNav) {
     return (
       <button
+        title="Navbar open button"
         aria-label="Menu Icon"
         onClick={activeNav}
         className="absolute inset-0 z-50 h-fit inline-flex justify-center ">
@@ -152,7 +153,7 @@ function Navbar() {
                 width="w-[150px]"
               />
 
-              <motion.button aria-label="Menu Icon" variants={itemVariants} className={DEMO_NAV_ITEM_CLASS} onClick={activeNav}><ChevronsUp size={24} /></motion.button>
+              <motion.button title="Navbar close button" aria-label="Menu Icon" variants={itemVariants} className={DEMO_NAV_ITEM_CLASS} onClick={activeNav}><ChevronsUp size={24} /></motion.button>
             </motion.div>
           )}
         </AnimatePresence>

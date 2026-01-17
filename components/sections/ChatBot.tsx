@@ -5,7 +5,7 @@ import { SendHorizonal, Minimize2, Maximize2, Bot } from "lucide-react";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import { useLoading } from "@/app/context/LoadingContext";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useToast } from "d9-toast";
+import { toast } from "d9-toast";
 
 type messagesType = {
     sender: string;
@@ -81,19 +81,16 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
     const abortControllerRef = useRef<AbortController | null>(null);
     const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
     const chatBoxRef = useRef<HTMLDivElement>(null);
-    const { sounds, showToast } = useToast();
 
     // Memoized health check.
     const checkHealth: () => Promise<void> = useCallback(async (): Promise<void> => {
 
-        if (!isOnline) {
-            showToast({
-                type: 'info',
-                message: "Checking assistant status…",
-                title: false,
-                theme: 'dark',
-            });
-        }
+        // if (!isOnline) {
+        //     toast.info("Checking assistant status.", {
+        //         title: false,
+        //         theme: 'dark',
+        //     });
+        // }
 
         // Clean up any previous requests.
         if (abortControllerRef.current) {
@@ -123,39 +120,36 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
             const data: string = await res.text();
 
             if (data) {
-                showToast({
-                    message: "Assistant is online now, Ready to help...",
+                toast.success("Assistant is online now, Ready to help...", {
                     title: false,
                     theme: 'dark',
                     audio: {
-                        volume: 0.8,
-                        audioFile: sounds.success,
+                        volume: 0.7,
+                        audioFile: toast.sounds.success,
                     },
                 });
 
                 setIsOnline(true);
             }
-            console.log("API Response:", data);
+            // console.log("API Response:", data);
 
         } catch (error: unknown) {
             clearTimeout(timeoutIdRef.current);
             if (error instanceof Error && error.name !== 'AbortError') {
                 console.error("Fetch Error:", error);
-                showToast({
-                    type: 'error',
-                    message: "Assistant is offline now, Not Ready to help !",
+                toast.error("Assistant is offline now, Not Ready to help !", {
                     title: false,
                     theme: 'dark',
                     audio: {
                         volume: 0.8,
-                        audioFile: sounds.warning,
+                        audioFile: toast.sounds.warning,
                     },
                 });
                 setIsOnline(false);
             }
             // Silently handle abort errors...
         }
-    }, [showToast, sounds]);
+    }, []);
 
     useEffect(() => {
         checkHealth();
@@ -179,7 +173,6 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
         scrollToBottom();
     }, [messages]);
 
-    console.log("Chat box component rendering");
 
     // Chat box resize function
     const handleResizing: () => void = useCallback(() => {
@@ -267,8 +260,8 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
     return (
         <AnimatePresence mode="wait">
             <motion.div
-                className={`fixed ${isMobile ? 'bottom-0 right-0' : 'bottom-4 right-4'
-                    } z-50 rounded-2xl shadow-3xl border-4 border-gray-900 flex flex-col overflow-hidden`}
+                className={`fixed max-h-[600px] ${isMobile ? 'bottom-0 right-0' : 'bottom-4 right-4'
+                    } z-50 rounded-2xl border border-white/10 shadow-2xl m-1.5 flex flex-col overflow-hidden`}
                 ref={chatBoxRef}
                 variants={!isMobile ? chatContainerVariants : undefined}
                 initial={!isMobile ? "minimized" : false}
@@ -281,7 +274,7 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
                 >
                     <div className="flex justify-between items-center">
                         <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                            <div title="Assistant - D9" className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                                 <Bot />
                             </div>
                             <div>
@@ -292,6 +285,7 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
                         <div className="flex space-x-2">
                             {isMobile ? (
                                 <motion.button
+                                title="Minimize button"
                                     onClick={() => setIsMinimized(true)}
                                     className="text-white/80 hover:text-white transition-colors cursor-pointer"
                                     whileHover={{ scale: 1.1 }}
@@ -301,6 +295,7 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
                                 </motion.button>
                             ) : (
                                 <motion.button
+                                title="Resize button"
                                     className="text-white/80 hover:text-white transition-colors cursor-pointer"
                                     onClick={handleResizing}
                                     whileHover={{ scale: 1.1 }}
@@ -314,7 +309,7 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
                 </motion.div>
 
                 {/* Messages Container */}
-                <div className=" relative flex-1 p-4 bg-white/0 backdrop-blur-md max-h-[480px] overflow-y-auto">
+                <div className=" relative flex-1 p-2 bg-black/90 max-h-[480px] overflow-y-auto">
 
                     <div className=" relative space-y-4">
                         <AnimatePresence mode="popLayout">
@@ -329,11 +324,11 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
                                 >
                                     <div
                                         className={`max-w-[80%] rounded-2xl p-3 ${message.sender === "user"
-                                            ? "bg-orange-400 text-gray-950 rounded-br-none"
+                                            ? "bg-orange-400 text-gray-800 rounded-br-none"
                                             : "bg-orange-50 text-gray-800 border border-orange-200 rounded-bl-none shadow-sm shadow-orange-900"
                                             }`}
                                     >
-                                        <p className="text-sm">{message.text}</p>
+                                        <p className="text-sm font-mono font-medium">{message.text}</p>
                                     </div>
                                 </motion.div>
                             ))}
@@ -402,12 +397,13 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
                             className="flex-1 border border-gray-400 rounded-xl px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:bg-gray-100"
                         />
                         <button
+                            title="Send button"
                             aria-label="send button"
                             onClick={sendMessage}
                             disabled={isLoading || !input.trim() || !isOnline}
                             className="bg-orange-400 hover:bg-orange-500 disabled:bg-gray-400 text-white p-2 rounded-full cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-offset-2"
                         >
-                            <SendHorizonal />
+                            <SendHorizonal strokeWidth={1.3} />
                         </button>
                     </div>
                     <motion.p
