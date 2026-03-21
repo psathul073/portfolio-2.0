@@ -1,10 +1,10 @@
 import { Geist, Fira_Code } from "next/font/google";
 import Navbar from "@/components/ui/Navbar";
 import type { Metadata } from "next";
-import { ToastProvider } from "d9-toast";
 import ConditionalLoading from "./conditional-loading";
 import "d9-toast/toast.css";
 import "./globals.css";
+import { Providers } from "@/components/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +18,8 @@ const firaCode = Fira_Code({
 
 export const metadata: Metadata = {
   title: "Athul - Portfolio",
-  description: "Full-stack developer specializing in React, Next.js, and modern web technologies",
+  description:
+    "Full-stack developer specializing in React, Next.js, and modern web technologies",
   keywords: "developer, portfolio, react, nextjs, web development",
 };
 
@@ -27,16 +28,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
-
   return (
-    <html lang="en" >
+    <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         {/* Open Graph  */}
         <meta property="og:title" content="Athul - Portfolio" />
-        <meta property="og:description" content="Full-stack developer specializing in React, Next.js, and modern web technologies" />
+        <meta
+          property="og:description"
+          content="Full-stack developer specializing in React, Next.js, and modern web technologies"
+        />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/og-image.jpg" />
       </head>
@@ -45,9 +46,7 @@ export default function RootLayout({
       >
         <Navbar />
         <ConditionalLoading>
-          <ToastProvider>
-            {children}
-          </ToastProvider>
+          <Providers>{children}</Providers>
         </ConditionalLoading>
       </body>
     </html>
