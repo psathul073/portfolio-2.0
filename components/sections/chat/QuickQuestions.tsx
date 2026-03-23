@@ -52,7 +52,7 @@ export default function QuickQuestions({
                 custom={i}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="text-xs bg-orange-200 px-3 py-1 rounded-full"
+                className="text-xs bg-orange-200 text-gray-800 px-3 py-1 rounded-full cursor-pointer"
               >
                 {q}
               </motion.button>
