@@ -49,14 +49,7 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
   // Memoized health check.
   const checkHealth: () => Promise<void> =
     useCallback(async (): Promise<void> => {
-      // if (!isOnline) {
-      //     toast.info("Checking assistant status.", {
-      //         title: false,
-      //         theme: 'dark',
-      //     });
-      // }
-
-      // Clean up any previous requests.
+      // Clean up previous requests
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
@@ -71,14 +64,11 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
       }, 5000);
 
       try {
-        const res: Response = await fetch(
-          "https://portfolio-assistant-csi7.onrender.com/",
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            signal: abortControllerRef.current.signal,
-          },
-        );
+        const res: Response = await fetch("/api/health", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          signal: abortControllerRef.current.signal,
+        });
 
         clearTimeout(timeoutIdRef.current);
 
@@ -90,10 +80,8 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
           toast.success("Assistant is online now, Ready to help...", {
             theme: "dark",
           });
-
           setIsOnline(true);
         }
-        // console.log("API Response:", data);
       } catch (error: unknown) {
         clearTimeout(timeoutIdRef.current);
         if (error instanceof Error && error.name !== "AbortError") {
@@ -103,7 +91,6 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
           });
           setIsOnline(false);
         }
-        // Silently handle abort errors...
       }
     }, []);
 
@@ -151,16 +138,14 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
     setIsLoading(true);
 
     try {
-      const res: Response = await fetch(
-        "https://portfolio-assistant-csi7.onrender.com/api/ask",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: userQuestion }),
-        },
-      );
+      const res = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: userQuestion }),
+      });
 
       const data: { answer: string } = await res.json();
+
       setMessages((prevMsg) => [
         ...prevMsg,
         {

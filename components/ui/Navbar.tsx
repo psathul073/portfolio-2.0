@@ -106,7 +106,7 @@ function Navbar() {
 
   if (!showNav) {
     return (
-      <div className="absolute inset-0 h-fit inline-flex justify-center gap-5 z-50">
+      <div className="fixed inset-0 h-fit inline-flex justify-center gap-5 z-50">
         <button
           disabled={!prevRoute}
           title="Previous page"
