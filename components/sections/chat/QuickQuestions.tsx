@@ -1,8 +1,16 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { quickQuestionVariants } from "./animations";
+import { motion, Variants } from "framer-motion";
 import { Dispatch, SetStateAction, useCallback } from "react";
+
+const quickQuestionVariants: Variants = {
+  initial: { opacity: 0, x: -20 },
+  animate: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: i * 0.1, duration: 0.3 },
+  }),
+};
 
 const quickQuestions: string[] = [
   "What technologies does he use?",
@@ -32,14 +40,9 @@ export default function QuickQuestions({
   );
 
   return (
-    <AnimatePresence>
-      {messages.length <= 2 && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="px-4 py-2 bg-orange-50"
-        >
+    <>
+      {messages.length <= 6 && (
+        <div className="px-4 py-2 bg-orange-50">
           <p className="text-xs mb-2">Quick questions:</p>
           <div className="flex flex-wrap gap-2">
             {quickQuestions.map((q: string, i: number) => (
@@ -58,8 +61,8 @@ export default function QuickQuestions({
               </motion.button>
             ))}
           </div>
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

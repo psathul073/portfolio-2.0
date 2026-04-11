@@ -11,14 +11,12 @@ import {
 } from "react";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import { useLoading } from "@/app/context/LoadingContext";
-import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "d9-toast";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import QuickQuestions from "./QuickQuestions";
 import ChatInput from "./ChatInput";
 import FloatingButton from "./FloatingButton";
-import { chatContainerVariants } from "./animations";
 
 type messagesType = {
   sender: string;
@@ -31,93 +29,125 @@ type ChatBotPropType = {
 
 function ChatBot({ setOpenChatBox }: ChatBotPropType) {
   const { isMobile } = useLoading();
-  const [messages, setMessages] = useState<messagesType>([
-    {
-      sender: "bot",
-      text: "Hello! I'm here to help visitors learn about his work. Feel free to ask about his projects, skills, or how to get in touch.",
-    },
-  ]);
+  const [messages, setMessages] = useState<messagesType>([]);
   const [input, setInput] = useState<string>("");
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOnline, setIsOnline] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
-  const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
   const chatBoxRef = useRef<HTMLDivElement | null>(null);
+  const hasCheckedRef = useRef<boolean>(false);
 
-  // Memoized health check.
-  const checkHealth: () => Promise<void> =
-    useCallback(async (): Promise<void> => {
-      // Clean up previous requests
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-      if (timeoutIdRef.current) {
-        clearTimeout(timeoutIdRef.current);
-      }
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-      // Create new controller and timeout
-      abortControllerRef.current = new AbortController();
-      timeoutIdRef.current = setTimeout(() => {
-        abortControllerRef.current?.abort();
-      }, 5000);
+  // HEALTH CHECK WITH AUTO WAKE.
+  const checkHealth = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch("/api/health");
 
-      try {
-        const res: Response = await fetch("/api/health", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          signal: abortControllerRef.current.signal,
-        });
+      // Is sleeping.
+      if (!res.ok) {
+        setIsOnline(false);
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: "😴 I'm currently sleeping..." },
+          { sender: "bot", text: "🔄 Waking up... please wait ⏳" },
+        ]);
 
-        clearTimeout(timeoutIdRef.current);
+        let attempts = 0;
+        let success = false;
 
-        if (!res.ok) throw new Error("API response error");
+        while (attempts < 5 && !success) {
+          await delay(3000);
+          try {
+            const retryRes = await fetch("/api/health");
+            if (retryRes.ok) {
+              success = true;
+              break;
+            }
+          } catch {}
 
-        const data: string = await res.text();
+          attempts++;
+        }
 
-        if (data) {
-          toast.success("Assistant is online now, Ready to help...", {
-            theme: "dark",
-          });
+        if (success) {
           setIsOnline(true);
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "bot",
+              text: "🚀 I'm awake now! Ask me anything 😊",
+            },
+          ]);
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "bot",
+              text: "⚠️ Still waking up... please try again.",
+            },
+          ]);
         }
-      } catch (error: unknown) {
-        clearTimeout(timeoutIdRef.current);
-        if (error instanceof Error && error.name !== "AbortError") {
-          console.error("Fetch Error:", error);
-          toast.error("Assistant is offline now, Not Ready to help !", {
-            theme: "dark",
-          });
-          setIsOnline(false);
-        }
+        setIsLoading(false);
+        return;
       }
-    }, []);
+
+      // Is online.
+      await res.text();
+      setIsOnline(true);
+      setIsLoading(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: "👋 Hello! I'm here to help visitors learn about his work. Feel free to ask about his projects, skills, or how to get in touch.",
+        },
+      ]);
+    } catch {
+      setIsOnline(false);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: "😴 Server offline..." },
+        { sender: "bot", text: "🔄 Trying to wake it up..." },
+      ]);
+      await delay(300);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: "⚠️ Still waking up..." },
+      ]);
+    }
+  }, []);
 
   useEffect(() => {
+    if (hasCheckedRef.current) return;
+    hasCheckedRef.current = true;
     checkHealth();
-    return () => {
-      if (timeoutIdRef.current) {
-        clearTimeout(timeoutIdRef.current);
-      }
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
   }, [checkHealth]);
 
   // Auto-scroll to bottom when new messages arrive.
   const scrollToBottom: () => void = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
   // Auto scroll when new message arrived.
   useEffect(() => {
-    scrollToBottom();
+    const timeout = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+
+    return () => clearTimeout(timeout);
   }, [messages]);
 
   // Handle outside click.
-  useOutsideClick(chatBoxRef, () => setOpenChatBox(false));
+  useOutsideClick(chatBoxRef, (e) => {
+    e.preventDefault();
+    if (isMobile) {
+      setIsMinimized(true);
+    } else {
+      setOpenChatBox(false);
+    }
+  });
 
   // Memoized message send function.
   const sendMessage: () => Promise<void> = useCallback(async () => {
@@ -174,40 +204,35 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
   }
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        className={` chat-container fixed max-h-[600px] ${
-          isMobile ? "bottom-0 right-0" : "bottom-4 right-4"
-        } z-50 rounded-2xl border border-white/10 shadow-2xl m-1.5 flex flex-col overflow-hidden`}
-        ref={chatBoxRef}
-        variants={!isMobile ? chatContainerVariants : undefined}
-        initial={!isMobile ? "minimized" : false}
-        animate={!isMobile ? (isMinimized ? "minimized" : "expanded") : false}
-        layout={false}
-      >
-        <ChatHeader
-          isOnline={isOnline}
-          isMobile={isMobile}
-          isMinimized={isMinimized}
-          setIsMinimized={setIsMinimized}
-        />
+    <div
+      data-state={isMinimized || isMobile ? "min" : "max"}
+      className={`chat-container rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden ${
+        isMobile ? "bottom-0 right-0" : "bottom-5 right-5"
+      } `}
+      ref={chatBoxRef}
+    >
+      <ChatHeader
+        isOnline={isOnline}
+        isMobile={isMobile}
+        isMinimized={isMinimized}
+        setIsMinimized={setIsMinimized}
+      />
 
-        <ChatMessages
-          messages={messages}
-          isLoading={isLoading}
-          messagesEndRef={messagesEndRef}
-        />
+      <ChatMessages
+        messages={messages}
+        isLoading={isLoading}
+        messagesEndRef={messagesEndRef}
+      />
 
-        <QuickQuestions messages={messages} setInput={setInput} />
+      <QuickQuestions messages={messages} setInput={setInput} />
 
-        <ChatInput
-          input={input}
-          setInput={setInput}
-          sendMessage={sendMessage}
-          isLoading={isLoading}
-        />
-      </motion.div>
-    </AnimatePresence>
+      <ChatInput
+        input={input}
+        setInput={setInput}
+        sendMessage={sendMessage}
+        isLoading={isLoading}
+      />
+    </div>
   );
 }
 
