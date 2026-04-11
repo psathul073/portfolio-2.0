@@ -40,81 +40,109 @@ function ChatBot({ setOpenChatBox }: ChatBotPropType) {
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-  // HEALTH CHECK WITH AUTO WAKE.
+  // fetch with timeout (detect sleeping server).
+  const fetchWithTimeout = async (url: string, timeout = 3000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    try {
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(id);
+      return res;
+    } catch (err) {
+      clearTimeout(id);
+      throw err;
+    }
+  };
+
+  // Health check with auto awake.
   const checkHealth = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/health");
 
-      // Is sleeping.
-      if (!res.ok) {
+      let isSleeping = false;
+
+      // First attempt (detect timeout).
+      try {
+        const res = await fetchWithTimeout("/api/health", 3000);
+
+        if (!res.ok) {
+          isSleeping = true;
+        } else {
+          // If server already awake...
+          setIsOnline(true);
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "bot",
+              text: "👋 Hello! I'm here to help visitors learn about his work. Feel free to ask about his projects, skills, or how to get in touch.",
+            },
+          ]);
+          setIsLoading(false);
+          return;
+        }
+      } catch {
+        // Timeout our server sleeping..
+        isSleeping = true;
+      }
+
+      // Show sleeping message.
+      if (isSleeping) {
         setIsOnline(false);
         setMessages((prev) => [
           ...prev,
           { sender: "bot", text: "😴 I'm currently sleeping..." },
           { sender: "bot", text: "🔄 Waking up... please wait ⏳" },
         ]);
-
-        let attempts = 0;
-        let success = false;
-
-        while (attempts < 5 && !success) {
-          await delay(3000);
-          try {
-            const retryRes = await fetch("/api/health");
-            if (retryRes.ok) {
-              success = true;
-              break;
-            }
-          } catch {}
-
-          attempts++;
-        }
-
-        if (success) {
-          setIsOnline(true);
-          setMessages((prev) => [
-            ...prev,
-            {
-              sender: "bot",
-              text: "🚀 I'm awake now! Ask me anything 😊",
-            },
-          ]);
-        } else {
-          setMessages((prev) => [
-            ...prev,
-            {
-              sender: "bot",
-              text: "⚠️ Still waking up... please try again.",
-            },
-          ]);
-        }
-        setIsLoading(false);
-        return;
       }
 
-      // Is online.
-      await res.text();
-      setIsOnline(true);
+      // Retry loop
+      let attempts = 0;
+      let success = false;
+
+      while (attempts < 5 && !success) {
+        await delay(3000);
+
+        try {
+          const retryRes = await fetch("/api/health");
+          if (retryRes.ok) {
+            success = true;
+            break;
+          }
+        } catch {}
+
+        attempts++;
+      }
+
+      // Final result
+      if (success) {
+        setIsOnline(true);
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "bot",
+            text: "🚀 I'm awake now! Ask me anything 😊",
+          },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "bot",
+            text: "⚠️ Still waking up... please try again.",
+          },
+        ]);
+      }
+
       setIsLoading(false);
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "bot",
-          text: "👋 Hello! I'm here to help visitors learn about his work. Feel free to ask about his projects, skills, or how to get in touch.",
-        },
-      ]);
-    } catch {
+    } catch (err) {
+      setIsLoading(false);
       setIsOnline(false);
+
       setMessages((prev) => [
         ...prev,
         { sender: "bot", text: "😴 Server offline..." },
-        { sender: "bot", text: "🔄 Trying to wake it up..." },
-      ]);
-      await delay(300);
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "⚠️ Still waking up..." },
+        { sender: "bot", text: "⚠️ Please try again later." },
       ]);
     }
   }, []);
