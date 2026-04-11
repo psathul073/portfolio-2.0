@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Minimize2, Maximize2, Bot } from "lucide-react";
 import { Dispatch, SetStateAction, useCallback } from "react";
 
@@ -23,10 +22,7 @@ export default function ChatHeader({
   }, [setIsMinimized]);
 
   return (
-    <motion.div
-      className="bg-linear-to-r from-orange-500 to-orange-400 text-white p-4 rounded-t-2xl"
-      layout
-    >
+    <div className="bg-linear-to-r from-orange-500 to-orange-400 text-white p-3 rounded-t-2xl">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center relative">
@@ -50,26 +46,22 @@ export default function ChatHeader({
 
         <div className="flex space-x-2">
           {isMobile ? (
-            <motion.button
+            <button
               onClick={() => setIsMinimized(true)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className=" cursor-pointer"
+              className=" p-1 rounded-md hover:bg-orange-300/60 transition-colors duration-300  cursor-pointer"
             >
               <Minimize2 size={18} />
-            </motion.button>
+            </button>
           ) : (
-            <motion.button
+            <button
               onClick={handleResizing}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className=" cursor-pointer"
+              className=" p-1 rounded-md hover:bg-orange-300/60 transition-colors duration-300 cursor-pointer"
             >
               {isMinimized ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
-            </motion.button>
+            </button>
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

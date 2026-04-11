@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { messageVariants } from "./animations";
 import FormatMessage from "./FormatMessage";
 
 type messageType = {
@@ -22,32 +20,26 @@ export default function ChatMessages({
   messagesEndRef,
 }: ChatMessagesProps) {
   return (
-    <div className="relative flex-1 p-2 bg-black/90 max-h-[480px] overflow-y-auto">
+    <div className="relative flex-1 p-2 bg-black/90 overflow-y-auto">
       <div className="space-y-4">
-        <AnimatePresence mode="popLayout">
-          {messages.map((message: messageType, index: number) => (
-            <motion.div
-              key={`${message.sender}-${index}-${message.text.slice(0, 10)}`}
-              variants={messageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className={`flex ${
-                message.sender === "user" ? "justify-end" : "justify-start"
+        {messages.map((message: messageType, index: number) => (
+          <div
+            key={`${message.sender}-${index}-${message.text.slice(0, 10)}`}
+            className={`flex ${
+              message.sender === "user" ? "justify-end" : "justify-start"
+            }`}
+          >
+            <div
+              className={`max-w-[80%] rounded-2xl p-3 wrap-break-word ${
+                message.sender === "user"
+                  ? "bg-orange-400 text-gray-800 rounded-br-none"
+                  : "bg-orange-50 text-gray-800 border border-orange-200 rounded-bl-none"
               }`}
             >
-              <div
-                className={`max-w-[80%] rounded-2xl p-3 ${
-                  message.sender === "user"
-                    ? "bg-orange-400 text-gray-800 rounded-br-none"
-                    : "bg-orange-50 text-gray-800 border border-orange-200 rounded-bl-none"
-                }`}
-              >
-                <FormatMessage text={message.text} />
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+              <FormatMessage text={message.text} />
+            </div>
+          </div>
+        ))}
 
         {isLoading && (
           <div className="flex justify-start">

@@ -1,7 +1,6 @@
 "use client";
 
 import { SendHorizonal } from "lucide-react";
-import { motion } from "framer-motion";
 import React, {
   Dispatch,
   SetStateAction,
@@ -59,20 +58,21 @@ export default function ChatInput({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleInputKeyDown}
           disabled={isLoading}
-          className="flex-1 border rounded-xl px-3 py-2  "
+          className="flex-1 border-2 border-orange-400 rounded-xl px-3 py-2 focus:outline-0 disabled:border-orange-100"
+          placeholder="Ask anything"
         />
         <button
           onClick={handleSend}
           disabled={isLoading || !input.trim()}
-          className="bg-orange-400 text-white/70 p-2 rounded-full cursor-pointer"
+          className="bg-orange-400 text-white/70 p-2 rounded-full disabled:bg-orange-200 disabled:cursor-not-allowed cursor-pointer"
         >
           <SendHorizonal />
         </button>
       </div>
 
-      <motion.p className="text-xs text-center mt-2">
+      <p className="text-xs text-center mt-2">
         AI-powered assistant • Connected to backend
-      </motion.p>
+      </p>
     </div>
   );
 }
