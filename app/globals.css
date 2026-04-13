@@ -180,8 +180,8 @@ body {
 /* minimized */
 .chat-container[data-state="min"] {
   max-width: 400px;
-  min-height: 300px;
-  max-height: 600px;
+  min-height: 360px;
+  max-height: 660px;
 }
 
 /* expanded */

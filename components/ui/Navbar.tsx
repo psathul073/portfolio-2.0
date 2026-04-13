@@ -133,7 +133,7 @@ function Navbar() {
   }
 
   return (
-    <nav className="h-fit absolute inset-0 z-50 font-bold" ref={navRef}>
+    <nav className="h-fit fixed inset-0 z-50 font-bold" ref={navRef}>
       <div className="relative flex flex-col items-center py-2 font-fira-code text-lg text-orange-100 bg-transparent">
         {/* Logo */}
         <motion.div

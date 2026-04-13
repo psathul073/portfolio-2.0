@@ -58,7 +58,7 @@ export default function ChatInput({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleInputKeyDown}
           disabled={isLoading}
-          className="flex-1 border-2 border-orange-400 rounded-xl px-3 py-2 focus:outline-0 disabled:border-orange-100"
+          className="flex-1 text-gray-800 border-2 border-orange-400 rounded-xl px-3 py-2 focus:outline-0 disabled:border-orange-100"
           placeholder="Ask anything"
         />
         <button
